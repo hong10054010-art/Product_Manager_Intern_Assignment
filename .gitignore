@@ -39,3 +39,8 @@ src/html-content.js
 *.tmp
 *.temp
 .cache/
+
+# Assignment documents (should not be in repository)
+*.docx
+*.pdf
+~$*
