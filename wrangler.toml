@@ -1,0 +1,28 @@
+name = "feedback-insights"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "."
+
+# D1 Database
+[[d1_databases]]
+binding = "DB"
+database_name = "feedback-db"
+database_id = "20b5e201-fd69-4eab-9c42-2a339633ff5a"
+
+# R2 Storage
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "feedback-raw-data"
+
+# KV Namespace
+[[kv_namespaces]]
+binding = "SAVED_VIEWS"
+id = "c08a287376f647e1b07e4d6a584eac34"
+
+# Workers AI
+[ai]
+binding = "AI"
+
+# Routes
+routes = [
+  { pattern = "your-domain.com/*", zone_name = "your-domain.com" }
+]

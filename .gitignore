@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Cloudflare
+.wrangler/
+.dev.vars
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+*.min.js
+*.min.css
+
+# Database (local)
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
