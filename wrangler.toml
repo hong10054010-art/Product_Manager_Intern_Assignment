@@ -1,11 +1,9 @@
-name = "test-project"
+name = "product-manager-intern-assignment"
 compatibility_date = "2024-01-01"
 main = "src/index.js"
 
-# Static assets (for serving index.html and other static files)
-# [site] creates ASSETS binding automatically
-[site]
-bucket = "."
+# Note: [site] configuration is removed to avoid Workers Sites deployment issues
+# HTML content is embedded directly in the Worker via build-html.js
 
 # D1 Database
 [[d1_databases]]
