@@ -6,6 +6,10 @@ import { onRequestPost as processHandler } from '../functions/api/process.js';
 import { onRequestPost as aiAdviceHandler } from '../functions/api/ai-advice.js';
 import { onRequestPost as saveViewPostHandler, onRequestGet as saveViewGetHandler } from '../functions/api/save-view.js';
 
+// Import HTML content as a string
+// This will be bundled at build time
+import indexHTML from '../index.html?raw';
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -16,21 +20,17 @@ export default {
       return handleAPI(request, env, ctx, path);
     }
 
-    // Serve static files using ASSETS binding
-    // For root path, serve index.html
-    let assetPath = path === '/' ? '/index.html' : path;
-    
-    // Try to fetch from assets (works with both [site] and [assets] config)
-    // In Wrangler v3+, ASSETS binding is available when [assets] is configured
+    // Serve index.html for root and SPA routes
+    // First try ASSETS binding (if available)
     if (env.ASSETS) {
       try {
+        const assetPath = path === '/' ? '/index.html' : path;
         const assetRequest = new Request(new URL(assetPath, request.url).toString(), {
           method: request.method,
           headers: request.headers,
         });
         const assetResponse = await env.ASSETS.fetch(assetRequest);
         
-        // If asset found, return it
         if (assetResponse.status !== 404) {
           return assetResponse;
         }
@@ -39,34 +39,13 @@ export default {
       }
     }
 
-    // Fallback: for SPA routing, serve index.html
-    if (!path.includes('.')) {
-      // Try to get index.html from assets
-      if (env.ASSETS) {
-        try {
-          const indexRequest = new Request(new URL('/index.html', request.url).toString());
-          const indexResponse = await env.ASSETS.fetch(indexRequest);
-          if (indexResponse.status !== 404) {
-            return indexResponse;
-          }
-        } catch (e) {
-          console.error('Error fetching index.html:', e);
-        }
-      }
-      
-      // If ASSETS is not available, return helpful error
-      return new Response(
-        `Not Found - Path: ${path}\n` +
-        `ASSETS binding: ${env.ASSETS ? 'available' : 'not available'}\n` +
-        `Please ensure:\n` +
-        `1. [assets] directory is configured in wrangler.toml\n` +
-        `2. index.html exists in the project root\n` +
-        `3. Deploy with: wrangler deploy`,
-        { 
-          status: 404,
-          headers: { 'Content-Type': 'text/plain' }
-        }
-      );
+    // Fallback: serve embedded HTML for SPA routes
+    if (path === '/' || path === '/index.html' || !path.includes('.')) {
+      return new Response(indexHTML, {
+        headers: {
+          'Content-Type': 'text/html;charset=UTF-8',
+        },
+      });
     }
 
     // 404 for other paths

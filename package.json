@@ -5,8 +5,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "deploy": "wrangler deploy",
-    "dev": "wrangler dev"
+    "build": "node build-html.js",
+    "deploy": "npm run build && wrangler deploy",
+    "dev": "npm run build && wrangler dev"
   },
   "keywords": [
     "cloudflare",
