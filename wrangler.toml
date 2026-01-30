@@ -3,8 +3,9 @@ compatibility_date = "2024-01-01"
 main = "src/index.js"
 
 # Static assets (for serving index.html and other static files)
-[site]
-bucket = "."
+# Note: In Wrangler v3+, use [assets] instead of [site]
+[assets]
+directory = "."
 
 # D1 Database
 [[d1_databases]]

@@ -16,11 +16,12 @@ export default {
       return handleAPI(request, env, ctx, path);
     }
 
-    // Serve static files using ASSETS binding (from [site] bucket)
+    // Serve static files using ASSETS binding
     // For root path, serve index.html
     let assetPath = path === '/' ? '/index.html' : path;
     
-    // Try to fetch from assets
+    // Try to fetch from assets (works with both [site] and [assets] config)
+    // In Wrangler v3+, ASSETS binding is available when [assets] is configured
     if (env.ASSETS) {
       try {
         const assetRequest = new Request(new URL(assetPath, request.url).toString(), {
@@ -53,10 +54,19 @@ export default {
         }
       }
       
-      // Ultimate fallback
-      return new Response('Not Found - Please ensure index.html is in the site bucket', { 
-        status: 404 
-      });
+      // If ASSETS is not available, return helpful error
+      return new Response(
+        `Not Found - Path: ${path}\n` +
+        `ASSETS binding: ${env.ASSETS ? 'available' : 'not available'}\n` +
+        `Please ensure:\n` +
+        `1. [assets] directory is configured in wrangler.toml\n` +
+        `2. index.html exists in the project root\n` +
+        `3. Deploy with: wrangler deploy`,
+        { 
+          status: 404,
+          headers: { 'Content-Type': 'text/plain' }
+        }
+      );
     }
 
     // 404 for other paths
