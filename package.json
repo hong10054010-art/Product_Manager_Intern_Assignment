@@ -1,0 +1,17 @@
+{
+  "name": "feedback-insights",
+  "version": "1.0.0",
+  "description": "Feedback Insights Dashboard - Cloudflare Pages project",
+  "private": true,
+  "scripts": {
+    "deploy": "echo 'This is a Cloudflare Pages project. Deploy via GitHub integration or use: wrangler pages deploy'"
+  },
+  "keywords": [
+    "cloudflare",
+    "pages",
+    "feedback",
+    "dashboard"
+  ],
+  "author": "",
+  "license": "MIT"
+}

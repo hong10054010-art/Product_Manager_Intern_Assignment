@@ -22,7 +22,5 @@ id = "c08a287376f647e1b07e4d6a584eac34"
 [ai]
 binding = "AI"
 
-# Routes
-routes = [
-  { pattern = "your-domain.com/*", zone_name = "your-domain.com" }
-]
+# Note: Routes are not needed for Pages projects
+# Pages automatically serves files from the root directory
